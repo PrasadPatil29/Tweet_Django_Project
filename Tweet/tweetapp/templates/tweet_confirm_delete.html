@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Confirm Deletion
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center text-danger">Confirm Deletion</h1>
+    
+    <div class="card shadow-lg p-4 mt-4">
+        <h5>Are you sure you want to delete this tweet?</h5>
+        
+        <div class="card-body">
+            <p><strong>User:</strong> {{ tweet.user.username }}</p>
+            <p><strong>Text:</strong> {{ tweet.text }}</p>
+            
+            {% if tweet.photo %}
+                <img src="{{ tweet.photo.url }}" alt="Tweet Image" class="img-fluid" style="max-width: 300px;">
+            {% else %}
+                <p>No image available</p>
+            {% endif %}
+        </div>
+
+        <form method="POST" class="mt-4">
+            {% csrf_token %}
+            
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-danger">Delete</button>
+                <a href="{% url 'tweet_list' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
