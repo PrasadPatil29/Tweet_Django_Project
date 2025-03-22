@@ -7,31 +7,29 @@ Tweeter
 {% block content %}
 <h1 class="text-center">Welcome to Tweeter</h1>
 
-<!-- Fixed URL Syntax -->
-<a class="btn btn-primary" href="{% url 'tweet_create' %}">Create a Tweet</a>
+<a class="btn btn-primary mb-4" href="{% url 'tweet_create' %}">Create a Tweet</a>
 
 <div class="container row gap-3">
-    {% for tweet in tweets %}   <!-- Fixed variable name -->
+    {% for tweet in tweets %}
     <div class="card" style="width: 18rem;">
         {% if tweet.photo %}
-            <img src="{{ tweet.photo.url }}" class="card-img-top" alt="...">
+            <img src="{{ tweet.photo.url }}" class="card-img-top" alt="Tweet Image">
         {% else %}
-            <img src="/static/default_image.jpg" class="card-img-top" alt="No Image">  <!-- Handle missing image -->
+            <img src="/static/default_image.jpg" class="card-img-top" alt="No Image Available">  
         {% endif %}
-        
+
         <div class="card-body">
             <h5 class="card-title">{{ tweet.user.username }}</h5>
             <p class="card-text">{{ tweet.text }}</p>
 
-            <!-- Prevent NoReverseMatch by checking for valid ID -->
-            {% if tweet.id %}
+            {% if tweet.user == user %}   <!-- Only show buttons for the owner -->
                 <a href="{% url 'tweet_edit' tweet.id %}" class="btn btn-primary">Edit</a>
                 <a href="{% url 'tweet_delete' tweet.id %}" class="btn btn-danger">Delete</a>
-            {% else %}
-                <span class="btn btn-secondary">No ID Available</span>
             {% endif %}
         </div>
     </div>
+    {% empty %}
+    <p class="text-center">No tweets found.</p>
     {% endfor %}
 </div>
 {% endblock %}
